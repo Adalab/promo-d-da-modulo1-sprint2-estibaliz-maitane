@@ -6,13 +6,16 @@ El día de hoy vamos a realizar ejercicios en los que practicaremos las queries 
 INNER JOIN y NATURAL JOIN. De esta manera podremos combinar los datos de diferentes tablas en las mismas bases de datos, para así realizar 
 consultas mucho mas complejas.*/
 
-
 /* 1. Pedidos por empresa en UK:
 Desde las oficinas en UK nos han pedido con urgencia que realicemos una consulta a la base de datos con la que podamos conocer cuántos 
 pedidos ha realizado cada empresa cliente de UK. Nos piden el ID del cliente y el nombre de la empresa y el número de pedidos.
 Deberéis obtener una tabla similar a esta: */
  
- 
+ SELECT customers.company_name AS NombreEmpresa, customers.customer_id AS Identificador,  COUNT(order_id) AS NumeroPedidos
+	FROM orders INNER JOIN customers
+    USING (customer_id)
+    GROUP BY customers.customer_id
+    HAVING COUNT(orders.ship_country = 'UK');
  
  /* 2. Productos pedidos por empresa en UK por año:
 Desde Reino Unido se quedaron muy contentas con nuestra rápida respuesta a su petición anterior y han decidido pedirnos una serie de 
@@ -21,7 +24,12 @@ cliente de UK durante cada año. Nos piden concretamente conocer el nombre de la
 Para ello hará falta hacer 2 joins.
 El resultado será una tabla similar a esta:*/
  
- 
+SELECT customers.company_name AS NombreEmpresa, YEAR(orders.shipped_date) AS Año, SUM(quantity) AS NumObjetos
+	FROM orders
+    CROSS JOIN customers, order_details
+    WHERE customers.customer_id = orders.customer_id AND orders.order_id = order_details.order_id
+    GROUP BY customers.company_name, YEAR(orders.shipped_date)
+    HAVING COUNT(orders.ship_country = 'UK');
  
  /* 3. Mejorad la query anterior:
 Lo siguiente que nos han pedido es la misma consulta anterior pero con la adición de la cantidad de dinero que han pedido por esa 
@@ -29,7 +37,13 @@ cantidad de objetos, teniendo en cuenta los descuentos, etc. Ojo que los descuen
 nos sale como 0.15.
 La tabla resultante será:*/
  
-
+ # COPIA DEL DE ARRIBA. FALTA INLUIR LO NUEVO
+SELECT customers.company_name AS NombreEmpresa, YEAR(orders.shipped_date) AS Año, SUM(quantity) AS NumObjetos
+	FROM orders
+    CROSS JOIN customers, order_details
+    WHERE customers.customer_id = orders.customer_id AND orders.order_id = order_details.order_id
+    GROUP BY customers.company_name, YEAR(orders.shipped_date)
+    HAVING COUNT(orders.ship_country = 'UK');
 
  /* 4. BONUS: Pedidos que han realizado cada compañía y su fecha:
 Después de estas solicitudes desde UK y gracias a la utilidad de los resultados que se han obtenido, desde la central nos han pedido 
