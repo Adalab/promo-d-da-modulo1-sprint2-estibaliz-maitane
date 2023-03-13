@@ -24,10 +24,21 @@ cliente de UK durante cada año. Nos piden concretamente conocer el nombre de la
 Para ello hará falta hacer 2 joins.
 El resultado será una tabla similar a esta:*/
  
-SELECT customers.company_name AS NombreEmpresa, YEAR(orders.shipped_date) AS Año, SUM(quantity) AS NumObjetos
+# Con CROSS JOIN deja hacer los dos joins juntos pero es menos eficiente:
+SELECT customers.company_name AS NombreEmpresa, YEAR(orders.shipped_date) AS Año, SUM(order_details.quantity) AS NumObjetos
 	FROM orders
     CROSS JOIN customers, order_details
     WHERE customers.customer_id = orders.customer_id AND orders.order_id = order_details.order_id
+    GROUP BY customers.company_name, YEAR(orders.shipped_date)
+    HAVING COUNT(orders.ship_country = 'UK');
+
+# Con INNER JOIN sería haciendo dos:   
+SELECT customers.company_name AS NombreEmpresa, YEAR(orders.shipped_date) AS Año, SUM(order_details.quantity) AS NumObjetos
+	FROM orders
+    INNER JOIN customers
+    USING (customer_id)
+	INNER JOIN order_details
+    USING (order_id)
     GROUP BY customers.company_name, YEAR(orders.shipped_date)
     HAVING COUNT(orders.ship_country = 'UK');
  
@@ -38,10 +49,13 @@ nos sale como 0.15.
 La tabla resultante será:*/
  
  # COPIA DEL DE ARRIBA. FALTA INLUIR LO NUEVO
-SELECT customers.company_name AS NombreEmpresa, YEAR(orders.shipped_date) AS Año, SUM(quantity) AS NumObjetos
+SELECT customers.company_name AS NombreEmpresa, YEAR(orders.shipped_date) AS Año, 
+SUM(order_details.quantity) AS NumObjetos, SUM(order_details.unit_price * order_details.quantity * (1 - order_details.discount)) AS DineroTotal
 	FROM orders
-    CROSS JOIN customers, order_details
-    WHERE customers.customer_id = orders.customer_id AND orders.order_id = order_details.order_id
+    INNER JOIN customers
+    USING (customer_id)
+	INNER JOIN order_details
+    USING (order_id)
     GROUP BY customers.company_name, YEAR(orders.shipped_date)
     HAVING COUNT(orders.ship_country = 'UK');
 
