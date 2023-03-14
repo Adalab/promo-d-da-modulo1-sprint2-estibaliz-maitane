@@ -46,10 +46,23 @@ las empleadas y sus supervisoras. Concretamente nos piden: la ubicación, nombre
 Investiga el resultado, ¿sabes decir quién es el director?
 La tabla resultado de la query deberá ser:*/
 
-SELECT 
-	FROM A.
-
+SELECT A.city, A.first_name AS NombreEmpleado, A.last_name AS ApellidoEmpleado, B.city, B.first_name AS NombreJefe, B.last_name AS ApellidoJefe
+	FROM employees AS A, employees AS B
+    WHERE A.reports_to = B.employee_id;
+    
+-- El director es Andrew Fuller. --
+    
 /* 5. BONUS: FULL OUTER JOIN Pedidos y empresas con pedidos asociados o no:
 Selecciona todos los pedidos, tengan empresa asociada o no, y todas las empresas tengan pedidos asociados o no. 
 Muestra el ID del pedido, el nombre de la empresa y la fecha del pedido (si existe).
-La tabala resultado deberá similar a:*/
+La tabla resultado deberá similar a:*/
+
+SELECT orders.order_id AS OrderID, customers.company_name AS NombreCliente, orders.order_date AS FechaPedido
+	FROM orders
+    LEFT JOIN customers
+    ON orders.customer_id = customers.customer_id
+    UNION
+SELECT orders.order_id AS OrderID, customers.company_name AS NombreCliente, orders.order_date AS FechaPedido
+	FROM orders
+    RIGHT JOIN customers
+    ON orders.customer_id = customers.customer_id;
