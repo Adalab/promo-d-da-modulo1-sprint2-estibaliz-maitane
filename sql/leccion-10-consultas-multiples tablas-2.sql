@@ -57,7 +57,7 @@ SELECT orders.order_id AS OrderID, customers.company_name AS NombreCliente, orde
     LEFT JOIN customers
     ON orders.customer_id = customers.customer_id
     UNION
-SELECT orders.order_id AS OrderID, customers.company_name AS NombreCliente, orders.order_date AS FechaPedido
+	SELECT orders.order_id AS OrderID, customers.company_name AS NombreCliente, orders.order_date AS FechaPedido
 	FROM orders
     RIGHT JOIN customers
     ON orders.customer_id = customers.customer_id;
