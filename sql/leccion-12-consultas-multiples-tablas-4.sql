@@ -59,4 +59,14 @@ Qué producto es más popular
 Extraed cuál es el producto que más ha sido comprado y la cantidad que se compró.
 El resultado de esta query es:*/
 
+SELECT products.product_name AS ProductName, SumQuantity AS `MAX(SumQuantity)`
+	FROM products, (SELECT product_id, SUM(quantity) AS SumQuantity
+							FROM order_details
+                            GROUP BY product_id) AS tablasum
+    WHERE products.product_id = tablasum.product_id
+    ORDER BY SumQuantity DESC
+    LIMIT 1;
+    
+
+
 
