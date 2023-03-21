@@ -43,16 +43,20 @@ SELECT city AS ciudad, company_name AS empresa, contact_name AS persona_contacto
     INNER JOIN orders
     USING (customer_id)
     WHERE city LIKE 'L%'
-    GROUP BY city, company_name
+    GROUP BY city, company_name, contact_name
     HAVING COUNT(order_id);
 
 /*5. Todos los clientes cuyo "contact_title" no incluya "Sales".
 Nuestro objetivo es extraer los clientes que no tienen el contacto "Sales" en su "contact_title". Extraer el nombre de contacto, 
 su posisión (contact_title) y el nombre de la compañia.*/
 
-
+SELECT contact_name, contact_title, company_name
+	FROM customers
+    WHERE contact_title NOT LIKE '%Sales%';
 
 /*6. Todos los clientes que no tengan una "A" en segunda posición en su nombre.
 Devolved unicamente el nombre de contacto.*/
 
-
+SELECT contact_name
+	FROM customers
+    WHERE contact_name NOT LIKE '_a%';
