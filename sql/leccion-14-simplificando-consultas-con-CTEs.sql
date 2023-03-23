@@ -7,8 +7,7 @@ Para empezar nos han mandado hacer una CTE muy sencilla el id del cliente y el n
 Los resultados de esta query serán:*/
 
 WITH ClientesEmpresas
-  AS (
-		SELECT customer_id AS CustID, company_name AS CompanyName
+  AS (SELECT customer_id AS CustID, company_name AS CompanyName
 			FROM customers)
 SELECT * FROM ClientesEmpresas;
 
@@ -18,8 +17,7 @@ pertezcan a "Germany".
 Los resultados de esta query serán:*/
 
 WITH ClientesEmpresas
-  AS (
-		SELECT customer_id AS CustID, company_name AS CompanyName
+  AS (SELECT customer_id AS CustID, company_name AS CompanyName
 			FROM customers)
 SELECT customer_id, company_name
 FROM customers
@@ -32,8 +30,7 @@ En este caso queremos extraer todas las facturas que se han emitido a un cliente
 Los resultados de esta query serán:*/
 
 WITH ClientesEmpresas
-  AS (
-		SELECT customer_id, company_name
+  AS (SELECT customer_id, company_name
 			FROM customers)
 	SELECT customer_id, company_name, order_id, order_date
     FROM orders
@@ -44,8 +41,7 @@ Mejoremos la query anterior. En este caso queremos saber el número de facturas 
 Los resultados de esta query serán:*/
 
 WITH ClientesEmpresas
-  AS (
-		SELECT customer_id, company_name
+  AS (SELECT customer_id, company_name
 			FROM customers)
 	SELECT customer_id, company_name, COUNT(order_id) AS numero_facturas
     FROM orders
@@ -58,10 +54,8 @@ WITH ClientesEmpresas
 Necesitaréis extraer la suma de las cantidades por cada producto y calcular la media.
 Los resultados de esta query serán:*/
 
-
 WITH CantidadProducto
-  AS (
-		SELECT product_id, quantity
+  AS (SELECT product_id, quantity
 			FROM order_details)
 	SELECT product_name AS producto, AVG(quantity) AS media_pedida
     FROM products
